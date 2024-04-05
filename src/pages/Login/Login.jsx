@@ -1,11 +1,34 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../Shared/Navbar/Navbar";
+import { useContext } from "react";
+import { AuthContext } from "../../Providers/AuthProviders/AuthProvider";
 
 const Login = () => {
-  const handleRegister = (e) => {
+  const { signIn } = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+  console.log("location in the login page", location);
+  const handleLogin = (e) => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
-    console.log(form.get("password"));
+    const email = form.get("email");
+    const password = form.get("password");
+    console.log(email, password);
+    signIn(email, password)
+      .then((result) => {
+        console.log(result.user);
+        // navigate after login
+        navigate(location?.state ? location.state : "/");
+      })
+
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    console.log("aitase register hoyte");
   };
   return (
     <div>
@@ -15,7 +38,7 @@ const Login = () => {
           Please Login
         </h2>
         <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100  mx-auto">
-          <form className="card-body">
+          <form onSubmit={handleLogin} className="card-body">
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -52,8 +75,8 @@ const Login = () => {
           <p className="ml-16 p-2">
             Do not have an account{" "}
             <Link
-              onClick={handleRegister}
               to="/register"
+              onClick={handleRegister}
               className="text-blue-600 font-bold mt-4"
             >
               Register

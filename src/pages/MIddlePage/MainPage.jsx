@@ -1,15 +1,10 @@
-import { useEffect, useState } from "react";
 import profile from "../../assets/IMG_20220930_181146.jpg";
 import moment from "moment";
+import PropTypes from "prop-types";
 import { CiBookmark, CiShare2 } from "react-icons/ci";
-const MainPage = () => {
-  const [news, setNews] = useState([]);
-  useEffect(() => {
-    fetch("news.json")
-      .then((res) => res.json())
-      .then((data) => setNews(data));
-  }, []);
-  console.log(news);
+import { Link } from "react-router-dom";
+const MainPage = ({ aNews }) => {
+  const { title, image_url, details, _id } = aNews;
   return (
     <div>
       <h1 className=" font-display text-2xl">Dragon News Home</h1>
@@ -40,17 +35,26 @@ const MainPage = () => {
         Biden Pledges Nearly S3 Billion To Ukraine in Largest U.S Military Aic
         Package Yet
       </p>
-      <div>
-        <img src="" alt="" />
+
+      {details.length > 200 ? (
         <p>
-          Europe, Joe Biden, Military, News, Russia, Security, UK, Ukraine,
-          United States, Worthy News (Worthy News) U.S. President Joe Biden has
-          announced nearly $3 billion in new U.S. military a.
+          {details.slice(0, 200)}{" "}
+          <Link to={`/aNews/${_id}`} className="text-red-600 font-bold">
+            Read More...
+          </Link>
         </p>
-        <button>Read More</button>
+      ) : (
+        <p>{details}</p>
+      )}
+      <div>
+        <img src={image_url} alt="" />
+        <p>{title}</p>
       </div>
     </div>
   );
 };
 
 export default MainPage;
+MainPage.propTypes = {
+  aNews: PropTypes.object,
+};
