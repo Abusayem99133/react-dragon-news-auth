@@ -1,21 +1,54 @@
 import { Link } from "react-router-dom";
 import Navbar from "../Shared/Navbar/Navbar";
 
-const Login = () => {
-  const handleRegister = (e) => {
+const Register = () => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(e.currentTarget);
     const form = new FormData(e.currentTarget);
-    console.log(form.get("password"));
+    const name = form.get("name");
+    const photo = form.get("photo");
+    const email = form.get("email");
+    const password = form.get("password");
+    console.log(name, photo, email, password);
+  };
+  const handleLogin = (e) => {
+    e.preventDefault();
+    console.log("Hello World");
   };
   return (
     <div>
       <Navbar></Navbar>
       <div>
         <h2 className="text-3xl mt-4 font-bold text-center mb-4">
-          Please Login
+          Please Register
         </h2>
         <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100  mx-auto">
-          <form className="card-body">
+          <form onSubmit={handleSubmit} className="card-body">
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Name</span>
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Your Name"
+                className="input input-bordered"
+                required
+              />
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Photo URL</span>
+              </label>
+              <input
+                type="text"
+                name="photo"
+                placeholder="photo url"
+                className="input input-bordered"
+                required
+              />
+            </div>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -46,17 +79,17 @@ const Login = () => {
               </label>
             </div>
             <div className="form-control mt-6">
-              <button className="btn btn-primary">Login</button>
+              <button className="btn btn-secondary">Register</button>
             </div>
           </form>
           <p className="ml-16 p-2">
-            Do not have an account{" "}
+            Already have an account{" "}
             <Link
-              onClick={handleRegister}
-              to="/register"
+              onClick={handleLogin}
+              to="/login"
               className="text-blue-600 font-bold mt-4"
             >
-              Register
+              Login
             </Link>
           </p>
         </div>
@@ -65,4 +98,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
